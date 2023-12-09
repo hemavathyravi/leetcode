@@ -1,0 +1,38 @@
+class Solution {
+    public boolean[][] bool;
+
+    public void setZeroes(int[][] matrix) {
+        int row = matrix.length;
+        int col = matrix[0].length;
+        bool = new boolean[row][col];
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (matrix[i][j] == 0 && isNotVisited(i, j)) {
+                    bool[i][j] = true;
+                    setZero(matrix, i, j, row, col);
+                }
+            }
+        }
+    }
+    private boolean isNotVisited(int row, int col) {
+        return !bool[row][col];
+    }
+    private void setZero(int[][] matrix, int i, int j, int row, int col) {
+        
+        for (int colNum = 0; colNum < col; colNum++) {
+            if (!bool[i][colNum]&&matrix[i][colNum] != 0) {
+                matrix[i][colNum] = 0;
+                bool[i][colNum] = true;
+                
+            }
+        }        
+        for (int rowNum = 0; rowNum < row; rowNum++) {
+            if (!bool[rowNum][j]&&matrix[rowNum][j] != 0) {
+                matrix[rowNum][j] = 0;
+                bool[rowNum][j] = true;
+                
+            }
+        }
+    }
+}
