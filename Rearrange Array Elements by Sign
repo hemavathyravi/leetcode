@@ -1,0 +1,38 @@
+class Solution {
+    public int[] rearrangeArray(int[] nums) {
+
+        int n=nums.length/2;
+        int[] a=new int[n];
+        int acount=0,bcount=0;
+        int[] b=new int[n];
+        for(int i=0;i<n+n;i++)
+        {
+            if(nums[i]<0)
+            {
+                a[acount]=nums[i];
+                acount++;
+            }
+            else
+            {
+                b[bcount]=nums[i];
+                bcount++;
+            }
+        }
+        int aindex=0,bindex=0;
+        for(int i=0;i<nums.length;i++)
+        {
+            if(i%2==0)
+            {
+                nums[i]=b[bindex];
+                bindex++;
+            }
+            else
+            {
+                nums[i]=a[aindex];
+                aindex++;
+            }
+        }
+        return nums;
+        
+    }
+}
