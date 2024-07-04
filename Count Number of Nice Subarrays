@@ -1,0 +1,28 @@
+class Solution {
+    public int numberOfSubarrays(int[] nums, int k) {
+        int goal1=countgoal(nums,k);
+        int goal2=countgoal(nums,k-1);
+        return goal1-goal2;
+        
+    }
+    public int countgoal(int[] nums,int goal)
+    {
+        // calc sum<=goal
+        int l=0,r=0,sum=0,count=0,n=nums.length;
+
+        while(r<n)
+        {
+            sum+=(nums[r]%2);                                    
+            while(sum>goal&&l<=r)
+            {
+                sum-=(nums[l]%2);
+                l++;
+            }
+            count=count+(r-l+1);
+            r++;
+           
+        }
+        return count;
+
+    }
+}
