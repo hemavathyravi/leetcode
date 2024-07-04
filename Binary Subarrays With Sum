@@ -1,0 +1,30 @@
+class Solution {
+    public int numSubarraysWithSum(int[] nums, int goal) {
+
+        int goal1=countgoal(nums,goal);
+        int goal2=countgoal(nums,goal-1);
+        return goal1-goal2;
+
+        
+    }
+    public int countgoal(int[] nums,int goal)
+    {
+        // calc sum<=goal
+        int l=0,r=0,sum=0,count=0,n=nums.length;
+
+        while(r<n)
+        {
+            sum+=nums[r];                                    
+            while(sum>goal&&l<=r)
+            {
+                sum-=nums[l];
+                l++;
+            }
+            count=count+(r-l+1);
+            r++;
+           
+        }
+        return count;
+
+    }
+}
