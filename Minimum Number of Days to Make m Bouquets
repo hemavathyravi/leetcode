@@ -1,0 +1,56 @@
+class Solution {
+    public int minDays(int[] bloomDay, int m, int k) {
+
+        int min=Integer.MAX_VALUE, max= Integer.MIN_VALUE;
+        int mid,midn,ans=-1;
+        for(int i=0;i<bloomDay.length;i++)
+        {
+            min=Math.min(min,bloomDay[i]);
+            max=Math.max(max,bloomDay[i]);
+        }
+        int low=min,high=max;
+
+        while(low<=high)
+        {
+            mid=(low+high)/2;
+            midn=func(bloomDay,mid,m,k);
+            if(midn>=m)
+            {
+                ans=mid;
+                high=mid-1;
+
+            }
+            else
+            {
+                low=mid+1;
+            }
+
+        }
+        return ans;
+        
+    }
+    int func(int[] bloomDay,int mid,int m,int k)
+    {
+        int count=0;
+        int bq=0;
+
+        for(int i=0;i<bloomDay.length;i++)
+        {
+            if(bloomDay[i]<=mid)
+            {
+                count++;
+                if (count == k) {
+                    bq++;
+                    count = 0; // Reset count after making a bouquet
+                }
+            }
+            else
+            {
+                //bq=count/k;
+                count=0;
+            }
+        }
+        //bq=count/k;
+        return bq;
+    }
+}
