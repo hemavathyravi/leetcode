@@ -1,0 +1,49 @@
+class Solution {
+    public boolean lemonadeChange(int[] bills) {
+
+        int inhandfive=0;
+        int inhandten=0;
+        int inhandtwe=0;
+        for(int i=0;i<bills.length;i++)
+        {
+            if(bills[i]==5)
+            {
+                inhandfive+=5;
+            }
+            else if(bills[i]==10)
+            {
+                if(inhandfive!=0)
+                {
+                    inhandfive-=5;
+                    inhandten+=10;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if(bills[i]==20)
+            {
+                if(inhandfive!=0&&inhandten!=0)
+                {
+                    inhandfive-=5;
+                    inhandten-=10;
+                    inhandtwe+=20;
+                }
+                else if(inhandfive>=15)
+                {
+                    inhandfive-=15;
+                    inhandtwe+=20;
+                }
+                
+                else
+                {
+                    return false;
+                }
+            }
+            
+        }
+        return true;
+        
+    }
+}
