@@ -1,0 +1,40 @@
+class Solution {
+    public int rob(int[] nums) {
+        if(nums.length==1)
+        return nums[0];
+         int[] first = new int[nums.length-1];
+        for(int i=1;i<nums.length;i++)
+        {
+            first[i-1]=nums[i];
+        }
+        int[] last = new int[nums.length-1];
+        for(int i=0;i<nums.length-1;i++)
+        {
+            last[i]=nums[i];
+        }
+         int[] dp = new int[nums.length-1];
+        for(int i=0;i<first.length;i++)
+        {
+            dp[i]=-1;
+        }
+         int[] dp1 = new int[nums.length-1];
+        for(int i=0;i<last.length;i++)
+        {
+            dp1[i]=-1;
+        }
+        return Math.max(f(first,first.length-1,dp),f(last,last.length-1,dp1));
+        
+    }
+    public int f(int[] nums,int ind,int[] dp)
+    {
+        if(ind==0)
+        return nums[ind];
+        if(ind<0)
+        return 0;
+        if(dp[ind]!=-1)
+        return dp[ind];
+        int pick=nums[ind]+f(nums,ind-2,dp);
+        int notpick= 0+f(nums,ind-1,dp);
+        return dp[ind]=Math.max(pick,notpick);
+    }
+}
