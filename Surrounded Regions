@@ -1,0 +1,53 @@
+class Solution {
+    public void solve(char[][] board) {
+        int n = board.length;
+        int m = board[0].length;
+        int[][] vis = new int[n][m];
+
+        // Traverse the first and last rows
+        for (int i = 0; i < m; i++) {
+            if (board[0][i] == 'O' && vis[0][i] != 1) {
+                dfs(board, vis, 0, i);
+            }
+            if (board[n-1][i] == 'O' && vis[n-1][i] != 1) {
+                dfs(board, vis, n-1, i);
+            }
+        }
+
+        // Traverse the first and last columns
+        for (int i = 0; i < n; i++) {
+            if (board[i][0] == 'O' && vis[i][0] != 1) {
+                dfs(board, vis, i, 0);
+            }
+            if (board[i][m-1] == 'O' && vis[i][m-1] != 1) {
+                dfs(board, vis, i, m-1);
+            }
+        }
+
+        // Replace all unvisited 'O' with 'X' and keep visited 'O' as is
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (vis[i][j] != 1 && board[i][j] == 'O') {
+                    board[i][j] = 'X';
+                }
+            }
+        }
+    }
+
+    public void dfs(char[][] board, int[][] vis, int row, int col) {
+        int[] delrow = {-1, 0, +1, 0};
+        int[] delcol = {0, +1, 0, -1};
+        vis[row][col] = 1;
+        int n = board.length;
+        int m = board[0].length;
+
+        for (int i = 0; i < 4; i++) {
+            int nrow = row + delrow[i];
+            int ncol = col + delcol[i];
+
+            if (nrow >= 0 && nrow < n && ncol >= 0 && ncol < m && board[nrow][ncol] == 'O' && vis[nrow][ncol] != 1) {
+                dfs(board, vis, nrow, ncol);
+            }
+        }
+    }
+}
