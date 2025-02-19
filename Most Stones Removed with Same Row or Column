@@ -1,0 +1,63 @@
+class Solution {
+    public int removeStones(int[][] stones) {
+        int maxrow=0, maxcol=0;
+        int n=stones.length;
+        for(int i=0;i<stones.length;i++){
+            for(int j=0;j<2;j++){
+                maxrow = Math.max(maxrow,stones[i][0]);
+                maxcol = Math.max(maxcol,stones[i][1]);
+            }
+        }
+        Disjoint ds = new Disjoint();
+        HashMap<Integer, Integer> stoneNodes = new HashMap<>();
+
+        for(int i=0;i<stones.length;i++){
+            int row= stones[i][0];
+            int col = stones[i][1] + maxrow+1;
+            ds.unionbyrank(row,col);
+            stoneNodes.put(row,1);
+            stoneNodes.put(col,1);
+        }
+        int cnt=0;
+        for(Map.Entry<Integer,Integer> it : stoneNodes.entrySet() ){
+            if(ds.find(it.getKey())==it.getKey()){
+                cnt++;
+            }
+
+        }
+        return n-cnt;
+    
+    }
+}
+class Disjoint {
+    HashMap<Integer, Integer> par = new HashMap<>();
+    HashMap<Integer, Integer> rank = new HashMap<>();
+
+    int find(int val) {
+        if (!par.containsKey(val)) {
+            par.put(val, val);
+            rank.put(val, 0);
+        }
+        if (par.get(val) == val) {
+            return val;
+        }
+        int root = find(par.get(val));
+        par.put(val, root);
+        return root;
+    }
+
+    void unionbyrank(int u, int v) {
+        int upar = find(u);
+        int vpar = find(v);
+        if (upar == vpar) return;
+
+        if (rank.get(upar) > rank.get(vpar)) {
+            par.put(vpar, upar);
+        } else if (rank.get(vpar) > rank.get(upar)) {
+            par.put(upar, vpar);
+        } else {
+            par.put(upar, vpar);
+            rank.put(vpar, rank.get(vpar) + 1);
+        }
+    }
+}
