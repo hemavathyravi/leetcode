@@ -1,0 +1,86 @@
+class Solution {
+    public List<List<String>> accountsMerge(List<List<String>> accounts) {
+
+        HashMap<String,Integer> mymap = new HashMap<>();
+        int n= accounts.size();
+
+        Disjoint ds = new Disjoint(n);
+        for(int i=0;i<n;i++){
+            for(int j=1;j<accounts.get(i).size();j++){
+                String mail=accounts.get(i).get(j);
+                if(mymap.containsKey(mail)==false){
+                    mymap.put(mail,i);
+                }
+                else{
+                    ds.unionbyrank(i,mymap.get(mail));
+                }
+            }
+        }
+        ArrayList<String>[] mergedmail = new ArrayList[n];
+        for(int i=0;i<n;i++){
+            mergedmail[i]=new ArrayList<>();
+        }
+        for(Map.Entry<String,Integer> it: mymap.entrySet()){
+            String maill = it.getKey();
+            int mailnum = ds.find(it.getValue());
+            mergedmail[mailnum].add(maill);
+        }
+
+        List<List<String>> ans = new ArrayList<>();
+
+        for(int i=0;i<n;i++){
+            if(mergedmail[i].size()==0){
+                continue;
+            }
+            List<String> temp = new ArrayList<>();
+            
+            for(String ml:mergedmail[i]){
+                temp.add(ml);
+            }
+            Collections.sort(temp);
+            temp.add(0,accounts.get(i).get(0));
+            ans.add(temp);
+        }
+        return ans;
+
+
+        
+        
+    }
+}
+class Disjoint{
+    int[] rank,par;
+    Disjoint(int n){
+        rank= new int[n];
+        par = new int[n];
+        for(int i=0;i<n;i++){
+            rank[i]=0;
+            par[i]=i;
+        }
+    }
+    int find(int val){
+        if(par[val]==val){
+            return val;
+        }
+        
+        return par[val]=find(par[val]);
+        
+    }
+    void unionbyrank(int u,int v){
+        int upar=find(u);
+        int vpar= find(v);
+        if(upar==vpar)
+        return;
+
+        if(rank[upar]>rank[vpar]){
+            par[vpar]=upar;
+        }
+        else if(rank[vpar]>rank[upar]){
+            par[upar]=vpar;
+        }
+        else{
+            par[upar]=vpar;
+            rank[vpar]++;
+        }
+    }
+}
